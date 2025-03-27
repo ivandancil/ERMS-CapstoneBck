@@ -3,13 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\Employee;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Models\EmployeeInvitation;
 use App\Http\Controllers\Controller;
+use App\Mail\EmployeeInvitationMail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
+
+   
+
     public function login(Request $request): JsonResponse
     {
         $request->validate([
@@ -44,21 +52,37 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email|max:255',
+            'email' => 'required|email|max:255',
             'password' => 'required|string|min:6|max:255'
         ]);
-
+    
+        // Check if the email exists in the employees table
+        $employee = Employee::where('email', $request->email)->first();
+    
+        if (!$employee) {
+            return response()->json([
+                "message" => "This email is not registered in the system."
+            ], 404);
+        }
+    
+        // Check if the user already exists
+        if (User::where('email', $request->email)->exists()) {
+            return response()->json([
+                'message' => 'User with this email already registered'
+            ], 409);
+        }
+    
+        // Create the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'user',
         ]);
-
-        if ($user) 
-        {
+    
+        if ($user) {
             $token = $user->createToken($user->name.'Auth-Token')->plainTextToken;
-
+    
             return response()->json([
                 'message' => 'Registration successful',
                 'token_type' => 'Bearer',
@@ -69,30 +93,42 @@ class AuthController extends Controller
                     'role' => $user->role
                 ]
             ], 201);
-
         } 
-            else 
-        {
-            return response()->json([
-                'message' => 'Something went wrong!',
-            ], 500);
-        }
-        
+    
+        return response()->json([
+            'message' => 'Something went wrong!',
+        ], 500);
+    }
+    
+
+    public function logout()
+    { 
+
+        auth()->user()->tokens()->delete();
+        return response()->json([
+            'status'=>200,
+            'message'=>'LOGGED Out Successfully',
+        ]);
+
     }
 
-    public function logout(Request $request): JsonResponse
+    public function getUser(Request $request): JsonResponse
     {
-        if ($request->user()) {
-            $request->user()->tokens()->delete();
+        $user = $request->user();
 
+        if (!$user) {
             return response()->json([
-                'message' => 'Logged out Successfully',
-            ], 200);
+                'message' => 'User not found'
+            ], 404);
         }
 
         return response()->json([
-            'message' => 'User Not found',
-        ], 404);
-         
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role
+            ]
+        ], 200);
     }
+        
 }
