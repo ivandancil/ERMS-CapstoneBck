@@ -22,6 +22,7 @@ class TrainingParticipantController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'training_id' => 'required|exists:trainings,id',
+            'training_title' => 'required|string|max:50',
             'fullname' => 'required|string|max:50',
             'jobposition' => 'required|string|max:50',
         ]);
@@ -35,6 +36,7 @@ class TrainingParticipantController extends Controller
     
         $participant = TrainingParticipant::create([
             'training_id' => $request->training_id,
+            'training_title' => $request->training_title,
             'fullname' => $request->fullname,
             'jobposition' => $request->jobposition,
         ]);

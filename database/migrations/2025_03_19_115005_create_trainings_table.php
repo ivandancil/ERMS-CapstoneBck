@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');
             $table->string('duration'); // Combine duration & unit here
+            $table->string('status')->default('Upcoming'); // Add status column with default value
             $table->timestamps();
         });
         

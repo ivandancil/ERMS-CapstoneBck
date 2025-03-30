@@ -18,6 +18,7 @@ class Training extends Model
         'start_datetime',
         'end_datetime',
         'duration',
+        'status',
        
     ];
 

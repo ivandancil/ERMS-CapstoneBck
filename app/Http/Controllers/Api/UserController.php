@@ -96,4 +96,16 @@ class UserController extends Controller
         ],  200);
     }
 
+    public function user(Request $request)
+{
+    return response()->json([
+        'id' => $request->user()->id,
+        'name' => $request->user()->name,
+        'email' => $request->user()->email,
+        'role' => $request->user()->role,
+        'job_position' => $request->user()->job_position ?? 'N/A', // Ensure job_position is included
+    ]);
+}
+
+
 }

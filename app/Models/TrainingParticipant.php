@@ -10,7 +10,7 @@ class TrainingParticipant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['training_id', 'fullname', 'jobposition'];
+    protected $fillable = ['training_id', 'training_title', 'fullname', 'jobposition'];
 
     public function training()
     {

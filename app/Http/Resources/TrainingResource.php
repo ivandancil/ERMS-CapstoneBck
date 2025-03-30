@@ -23,6 +23,7 @@ class TrainingResource extends JsonResource
             'start_datetime' => $this->start_datetime,
             'end_datetime' => $this->end_datetime,
             'duration' => $this->duration,
+            'status' => $this->status,
             'created_at' => $this->created_at,
         ];
     }
