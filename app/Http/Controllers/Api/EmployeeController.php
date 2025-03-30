@@ -146,4 +146,11 @@ class EmployeeController extends Controller
             'employee' => $employee
         ], 200);
     }
+
+    public function getTotalEmployees()
+{
+    $count = Employee::count();
+    return response()->json(['total' => $count]);
+}
+
 }

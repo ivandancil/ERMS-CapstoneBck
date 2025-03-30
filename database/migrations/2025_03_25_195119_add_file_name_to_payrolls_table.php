@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('payrolls', function (Blueprint $table) {
-            $table->string('file_name')->after('id'); // Add file_name column
+            if (!Schema::hasColumn('payrolls', 'file_name')) {
+                $table->string('file_name')->after('id');
+            }
         });
     }
 

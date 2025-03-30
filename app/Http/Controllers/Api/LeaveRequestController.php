@@ -27,6 +27,8 @@ class LeaveRequestController extends Controller
             'reason' => $request->reason,
         ]);
 
+        
+
         return response()->json([
             'message' => 'Leave request submitted.',
             'data' => new LeaveRequestResource($leaveRequest),

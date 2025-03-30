@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage; // Import Storage
 
 class PayrollController extends Controller
@@ -59,4 +61,22 @@ class PayrollController extends Controller
 
         return response()->json(['message' => 'Payroll status updated successfully!', 'payroll' => $payroll]);
     }
+
+ 
+public function viewPayroll($id) {
+    $payroll = Payroll::find($id);
+
+    if (!$payroll) {
+        return response()->json(["error" => "Payroll record not found."], 404);
+    }
+
+    // Construct the full file URL
+    $fileUrl = asset("storage/" . $payroll->file_path);
+
+    return response()->json([
+        "file_name" => $payroll->file_name,
+        "file_url" => $fileUrl
+    ]);
+}
+
 }
