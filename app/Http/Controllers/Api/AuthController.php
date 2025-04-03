@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use DB;
 use App\Models\User;
+use App\Models\UserLog;
 use App\Models\Employee;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -34,6 +36,12 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken($user->name.'Auth-Token')->plainTextToken;
+
+         // ✅ Log the user login action
+    UserLog::create([
+        'user_id' => $user->id,
+        'action' => 'User logged in',
+    ]);
 
         return response()->json([
             'message' => 'Login successful',
@@ -100,17 +108,35 @@ class AuthController extends Controller
         ], 500);
     }
     
-
-    public function logout()
+    public function logout(Request $request)
     { 
-
-        auth()->user()->tokens()->delete();
-        return response()->json([
-            'status'=>200,
-            'message'=>'LOGGED Out Successfully',
+        // Retrieve authenticated user
+        $user = $request->user();  
+    
+        if (!$user) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+    
+        // Store user logout log
+        DB::table('user_logs')->insert([
+            'user_id' => $user->id,
+            'action' => 'User logged out',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-
+    
+        // Delete user tokens
+        $user->tokens()->delete();
+    
+        return response()->json([
+            'status' => 200,
+            'message' => 'LOGGED Out Successfully',
+        ]);
     }
+    
 
     public function getUser(Request $request): JsonResponse
     {

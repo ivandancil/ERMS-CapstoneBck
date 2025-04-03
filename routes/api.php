@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PayrollController;
+use App\Http\Controllers\Api\UserLogController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\TrainingController;
+use App\Http\Controllers\Api\SystemLogController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\LeaveRequestController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -81,6 +83,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
    Route::apiResource('users', UserController::class);
    Route::apiResource('trainings', TrainingController::class);
    Route::apiResource('training-participants', TrainingParticipantController::class);
+   Route::get('/system-logs', [SystemLogController::class, 'index']);
+    Route::post('/system-logs', [SystemLogController::class, 'store']);
+    Route::get('/user-logs', [UserLogController::class, 'index']);
+    Route::post('/user-logs', [UserLogController::class, 'store']);
 
 // Get logged-in user info
 Route::get('/user', function (Request $request) {
