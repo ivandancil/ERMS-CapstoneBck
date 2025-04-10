@@ -4,15 +4,18 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Api\OCRController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PayrollController;
 use App\Http\Controllers\Api\UserLogController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\PDFParseController;
 use App\Http\Controllers\Api\TrainingController;
 use App\Http\Controllers\Api\SystemLogController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\LeaveRequestController;
+use App\Http\Controllers\Api\DocumentParseController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Http\Controllers\Api\TrainingParticipantController;
 
@@ -46,6 +49,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
      
     });
 });
+
+Route::post('/ocr', [OCRController::class, 'processFile']);
+
+        Route::post('/parse-document', [PDFParseController::class, 'parse']);
+        Route::post('/parse-document', [DocumentParseController::class, 'parseDocument']);
 
     // View all leave requests
     Route::get('/leave-requests', [LeaveRequestController::class, 'index']);
