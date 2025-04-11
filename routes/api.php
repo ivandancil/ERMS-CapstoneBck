@@ -50,10 +50,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-Route::post('/ocr', [OCRController::class, 'processFile']);
+Route::post('/ocr-process-file', [OCRController::class, 'processFile']);
 
         Route::post('/parse-document', [PDFParseController::class, 'parse']);
-        Route::post('/parse-document', [DocumentParseController::class, 'parseDocument']);
+        Route::post('/parse-document', [DocumentParseController::class, 'parse']);
 
     // View all leave requests
     Route::get('/leave-requests', [LeaveRequestController::class, 'index']);

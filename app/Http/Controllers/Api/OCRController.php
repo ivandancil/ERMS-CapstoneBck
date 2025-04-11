@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use TesseractOCR;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class OCRController extends Controller
 {
@@ -17,14 +16,14 @@ class OCRController extends Controller
         $filePath = $request->file('file')->store('uploads');
         $file = storage_path('app/' . $filePath);
 
+        // Use Tesseract OCR to extract text
         $ocr = new TesseractOCR($file);
         $text = $ocr->run();
 
-        // ✅ Call the parser here
+        // Parse the extracted text with regex
         $parsedData = $this->parseOCRText($text);
 
         return response()->json([
-            'raw_text' => $text,
             'parsed_data' => $parsedData
         ]);
     }
@@ -32,25 +31,28 @@ class OCRController extends Controller
     private function parseOCRText($text)
     {
         $result = [];
-        $lines = explode("\n", $text);
-
-        foreach ($lines as $line) {
-            if (stripos($line, 'name') !== false) {
-                $result['name'] = trim(explode(':', $line)[1] ?? '');
-            }
-            if (stripos($line, 'id') !== false) {
-                $result['id'] = trim(explode(':', $line)[1] ?? '');
-            }
-            if (stripos($line, 'dob') !== false || stripos($line, 'birth') !== false) {
-                $result['dob'] = trim(explode(':', $line)[1] ?? '');
-            }
-            if (stripos($line, 'address') !== false) {
-                $result['address'] = trim(explode(':', $line)[1] ?? '');
-            }
-            if (stripos($line, 'expiry') !== false) {
-                $result['expiry'] = trim(explode(':', $line)[1] ?? '');
-            }
+        // Regex parsing for PDS fields
+        preg_match('/Name:\s*(.*)/i', $text, $matches);
+        if (isset($matches[1])) {
+            $result['name'] = trim($matches[1]);
         }
+
+        preg_match('/ID:\s*(.*)/i', $text, $matches);
+        if (isset($matches[1])) {
+            $result['id'] = trim($matches[1]);
+        }
+
+        preg_match('/Date of Birth:\s*(.*)/i', $text, $matches);
+        if (isset($matches[1])) {
+            $result['dob'] = trim($matches[1]);
+        }
+
+        preg_match('/Address:\s*(.*)/i', $text, $matches);
+        if (isset($matches[1])) {
+            $result['address'] = trim($matches[1]);
+        }
+
+        // Add more fields as necessary
 
         return $result;
     }
