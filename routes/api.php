@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PayrollController;
 use App\Http\Controllers\Api\UserLogController;
+use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\PDFParseController;
 use App\Http\Controllers\Api\TrainingController;
@@ -50,10 +51,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-Route::post('/ocr-process-file', [OCRController::class, 'processFile']);
+// Route::post('/ocr-process-file', [OCRController::class, 'processFile']);
 
         Route::post('/parse-document', [PDFParseController::class, 'parse']);
         Route::post('/parse-document', [DocumentParseController::class, 'parse']);
+
+        // Document Uploads(PDS)
+        Route::post('/upload-pds', [DocumentController::class, 'upload']);
+        Route::get('/documents', [DocumentController::class, 'index']); // to list uploaded PDS
+        // Route to delete a file by ID
+        Route::delete('files/{id}', [DocumentController::class, 'delete']);
 
     // View all leave requests
     Route::get('/leave-requests', [LeaveRequestController::class, 'index']);
