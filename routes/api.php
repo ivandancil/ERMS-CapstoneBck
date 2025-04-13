@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\TrainingController;
 use App\Http\Controllers\Api\SystemLogController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\LeaveRequestController;
+use App\Http\Controllers\Api\UploadImageController;
 use App\Http\Controllers\Api\DocumentParseController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Http\Controllers\Api\TrainingParticipantController;
@@ -55,6 +56,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::post('/parse-document', [PDFParseController::class, 'parse']);
         Route::post('/parse-document', [DocumentParseController::class, 'parse']);
+
+        // Upload Image
+        Route::post('/upload-pds', [UploadImageController::class, 'uploadPDS']);
 
         // Document Uploads(PDS)
         Route::post('/upload-pds', [DocumentController::class, 'upload']);
