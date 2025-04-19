@@ -17,9 +17,6 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-
-   
-
     public function login(Request $request): JsonResponse
     {
         $request->validate([

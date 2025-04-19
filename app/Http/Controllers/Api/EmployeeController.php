@@ -16,7 +16,7 @@ class EmployeeController extends Controller
         $employees = Employee::all();
     
         if ($employees->isEmpty()) {
-            return response()->json([]); // Return an empty array
+            return response()->json([]); 
         }
     
         return response()->json([
@@ -33,10 +33,10 @@ class EmployeeController extends Controller
             'lastname'     => 'required|string|max:255',
             'firstname'    => 'required|string|max:255',
             'middlename'   => 'nullable|string|max:255',
-            'sex'          => 'required|in:Male,Female,Other', // Ensure valid gender options
+            'sex'          => 'required|in:Male,Female,Other', 
             'dateOfBirth'  => 'required|date',
-            'civilStatus'  => 'required|string|in:Single,Married,Divorced,Widowed', // Valid statuses
-            'phoneNumber'  => 'required|string|max:15|regex:/^[0-9+\-\s]+$/', // Allow digits, +, -
+            'civilStatus'  => 'required|string|in:Single,Married,Divorced,Widowed',
+            'phoneNumber'  => 'required|string|max:15|regex:/^[0-9+\-\s]+$/', 
             'email'        => 'required|email|max:255|unique:employees,email',
             'address'      => 'required|string',
             'jobPosition'  => 'required|string|max:255',
@@ -54,7 +54,7 @@ class EmployeeController extends Controller
             'employeeID'   => $request->employeeID,
             'lastname'     => $request->lastname,
             'firstname'    => $request->firstname,
-            'middlename'   => $request->middlename ?? null, // Nullable field
+            'middlename'   => $request->middlename ?? null, 
             'sex'          => $request->sex,
             'dateOfBirth'  => $request->dateOfBirth,
             'civilStatus'  => $request->civilStatus,
@@ -82,10 +82,10 @@ class EmployeeController extends Controller
             'lastname'     => 'required|string|max:255',
             'firstname'    => 'required|string|max:255',
             'middlename'   => 'nullable|string|max:255',
-            'sex'          => 'required|in:Male,Female,Other', // Ensure valid gender options
+            'sex'          => 'required|in:Male,Female,Other', 
             'dateOfBirth'  => 'required|date',
-            'civilStatus'  => 'required|string|in:Single,Married,Divorced,Widowed', // Valid statuses
-            'phoneNumber'  => 'required|string|max:15|regex:/^[0-9+\-\s]+$/', // Allow digits, +, -
+            'civilStatus'  => 'required|string|in:Single,Married,Divorced,Widowed', 
+            'phoneNumber'  => 'required|string|max:15|regex:/^[0-9+\-\s]+$/', 
             'email' => 'required|email|max:255|unique:employees,email,' . $employee->id,
             'address' => 'required|string',
             'jobPosition'  => 'required|string|max:255',
@@ -103,7 +103,7 @@ class EmployeeController extends Controller
             'employeeID'   => $request->employeeID,
             'lastname'     => $request->lastname,
             'firstname'    => $request->firstname,
-            'middlename'   => $request->middlename ?? null, // Nullable field
+            'middlename'   => $request->middlename ?? null, 
             'sex'          => $request->sex,
             'dateOfBirth'  => $request->dateOfBirth,
             'civilStatus'  => $request->civilStatus,

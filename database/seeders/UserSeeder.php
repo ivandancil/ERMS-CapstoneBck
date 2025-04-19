@@ -21,12 +21,5 @@ class UserSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        User::create([
-            'name' => 'Accounting User',
-            'email' => 'payroll@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'payroll',
-        ]);
-
     }
 }
