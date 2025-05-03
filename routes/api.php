@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\OCRController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ExtractIdController;
 use App\Http\Controllers\Api\UserLogController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\EmployeeController;
@@ -37,6 +38,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 });
+
+        Route::post('/extract-id', [ExtractIdController::class, 'extractId']);
 
         Route::post('/parse-document', [PDFParseController::class, 'parse']);
         Route::post('/parse-document', [DocumentParseController::class, 'parse']);
