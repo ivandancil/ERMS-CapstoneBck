@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->string('file_name')->after('id'); // Adding file_name column
+            // $table->string('file_name')->after('id'); // Adding file_name column
         
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->dropColumn('file_name'); // Dropping file_name column if the migration is rolled back
+            // $table->dropColumn('file_name'); // Dropping file_name column if the migration is rolled back
         });
     }
 };
