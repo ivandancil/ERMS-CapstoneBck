@@ -121,11 +121,20 @@ class EmployeeController extends Controller
 
     public function destroy(Employee $employee)
     {
+        // Try to find the user based on employee's email
+        $user = \App\Models\User::where('email', $employee->email)->first();
+    
+        if ($user) {
+            $user->delete(); // or $user->forceDelete() if you're using soft deletes
+        }
+    
         $employee->delete();
+    
         return response()->json([
-            'message' => 'Employee Deleted Successfully',
-        ],  200);
+            'message' => 'Employee and corresponding user deleted successfully',
+        ], 200);
     }
+    
 
     public function getLoggedInEmployee(Request $request): JsonResponse
     {
