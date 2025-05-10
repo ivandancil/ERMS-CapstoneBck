@@ -19,7 +19,8 @@ class DocumentController extends Controller
         $file = $request->file('file');
         $originalName = $file->getClientOriginalName();
         $filename = 'pds_' . time() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('public/documents', $filename);
+        $path = $file->storeAs('documents', $filename, 'public');
+
 
         // Save file metadata to the database
         $fileRecord = File::create([
@@ -38,11 +39,19 @@ class DocumentController extends Controller
 
     public function index()
     {
-        // Fetch files from the database
-        $files = File::all();
-
+        $files = File::all()->map(function ($file) {
+            return [
+                'id' => $file->id,
+                'file_name' => $file->file_name,
+                'original_name' => $file->original_name,
+                'uploaded_at' => $file->uploaded_at,
+                'file_path' => url($file->file_path), // 👈 Convert to full URL
+            ];
+        });
+    
         return response()->json($files);
     }
+    
 
      // Delete function
      public function delete($id)
