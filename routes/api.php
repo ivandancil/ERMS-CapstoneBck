@@ -39,7 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-        Route::post('/extract-id', [ExtractIdController::class, 'extractId']);
+        // Route::post('/extract-id', [ExtractIdController::class, 'extractId']);
 
         Route::post('/parse-document', [PDFParseController::class, 'parse']);
         Route::post('/parse-document', [DocumentParseController::class, 'parse']);
