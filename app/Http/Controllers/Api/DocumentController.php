@@ -37,20 +37,26 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function index()
-    {
-        $files = File::all()->map(function ($file) {
+   public function index()
+{
+    // Fetch all files from the database
+    $files = File::all();
+
+    // Return the list of files along with the count
+    return response()->json([
+        'count' => $files->count(), // Count of uploaded files
+        'files' => $files->map(function ($file) {
             return [
                 'id' => $file->id,
                 'file_name' => $file->file_name,
                 'original_name' => $file->original_name,
                 'uploaded_at' => $file->uploaded_at,
-                'file_path' => url($file->file_path), // 👈 Convert to full URL
+                'file_path' => url($file->file_path), // Generate full URL
             ];
-        });
-    
-        return response()->json($files);
-    }
+        })
+    ]);
+}
+
     
 
      // Delete function
